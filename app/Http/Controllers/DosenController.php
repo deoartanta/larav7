@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Dosen;
 
 class DosenController extends Controller
 {
@@ -17,7 +18,8 @@ class DosenController extends Controller
      */
     public function index()
     {
-        return view('dosen.index');
+        $data = Dosen::all();
+        return view('dosen.index')->withDosens($data);
     }
 
     /**
@@ -38,7 +40,8 @@ class DosenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dosen = Dosen::create($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -70,9 +73,11 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $dosen = Dosen::findOrFail($request->dosen_id);
+        $dosen->update($request->all());
+        return back();
     }
 
     /**
@@ -81,8 +86,10 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $dosen = Dosen::findOrFail($request->dosen_id);
+        $dosen->delete();
+        return back();
     }
 }
